@@ -1,10 +1,7 @@
 from django.test import TestCase
 from .models import Product, Tag
 from http import HTTPStatus
-
-
-# Create your tests here.
-
+ 
 class ProductModelTest(TestCase):
 
     #each method counts at one test
@@ -75,7 +72,7 @@ class ProductModelTest(TestCase):
         print(len(product1))
         self.assertEqual(len(product1), 2)
 
-
+#template view tests
 class HomepageTest(TestCase):
     
     def setUp(self) -> None:
