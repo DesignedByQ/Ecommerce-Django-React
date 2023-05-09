@@ -44,6 +44,8 @@ def get_products_and_create_product(request, format=None):
                 # update the tag field of serializer.data with tag_data
                 serializer.data['tags'].append(tag_data)
 
+          
+
             return Response(serializer.data, status=HTTPStatus.CREATED)
         return Response(serializer.errors, status=HTTPStatus.BAD_REQUEST)
     
@@ -67,9 +69,16 @@ def product_by_id(request, pk, format=None):
             return Response(serializer.data, status=HTTPStatus.OK)
         return Response(serializer.errors, status=HTTPStatus.BAD_REQUEST)
     
+    elif request.method == 'PATCH':
+        serializer = ProductSerializer(instance=product, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTPStatus.OK)
+        return Response(serializer.errors, status=HTTPStatus.BAD_REQUEST)
+
     elif request.method == 'DELETE':
         product.delete()
-        return Response("Product deleted successfully", status=HTTPStatus.NO_CONTENT)
+        return Response(f"Product {pk} deleted successfully", status=HTTPStatus.NO_CONTENT)
 
 
 # Tag views
@@ -116,10 +125,10 @@ def get_tag(request, pk):
     return Response(serializer.data)
 
 
-@api_view(['PUT'])
+@api_view(['PUT', 'PATCH'])
 def update_tag(request, pk):
-    tag = Tag.objects.get(id=pk)
-    serializer = TagSerializer(instance=tag, data=request.data)
+    tag = Tag.objects.get(id=pk) 
+    serializer = TagSerializer(instance=tag, data=request.data, partial=True)
 
     if serializer.is_valid():
         serializer.save()

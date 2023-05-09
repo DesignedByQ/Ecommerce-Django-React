@@ -12,7 +12,9 @@ urlpatterns = [
     #This view handles GET requests for a list of all Tag objects and POST requests to create a new Tag object.
     path('tags/', views.get_tags_and_create_tag, name='get-tags-and-create-tag'),
     #This view handles GET, PUT, and DELETE requests for a single Tag object, specified by its primary key pk.
-    #path('tags/<int:pk>/', views.TagDetail.as_view(), name='tag-detail'),
+    path('tags/<int:pk>/', views.get_tag, name='get-tag'),
+    path('tags/update/<int:pk>/', views.update_tag, name='update-tag'),
+    path('tags/delete/<int:pk>/', views.delete_tag, name='delete-tag')
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
